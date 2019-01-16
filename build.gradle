@@ -1,0 +1,58 @@
+buildscript {
+	ext {
+		springBootVersion = '2.1.1.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+configurations {
+	appOptics
+}
+
+applicationDefaultJvmArgs = ["-javaagent:$buildDir/libs/appoptics.jar"]
+mainClassName = 'com.ripcitysoftware.apm.DemoApplication'
+
+dependencies {
+	appOptics 'com.appoptics.agent.java:appoptics-agent:6.7.1'
+
+	implementation('org.springframework.boot:spring-boot-starter-actuator')
+	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+	implementation('org.springframework.boot:spring-boot-starter-web')
+	implementation('org.springframework.boot:spring-boot-starter-hateoas')
+	runtimeOnly('org.springframework.boot:spring-boot-devtools')
+	runtimeOnly('org.postgresql:postgresql')
+	compileOnly('org.projectlombok:lombok')
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
+}
+
+task copyAppOptics(type: Copy) {
+	println "Copying ${it} to ${project.buildDir}/lib"
+	from configurations.appOptics
+	into "${project.buildDir}/libs"
+	rename { it.substring(0, it.indexOf("-")) + it.substring(it.lastIndexOf("."), it.size()) }
+}
+task copyAppOpticsConfig(type: Copy) {
+	from "$buildDir/resources/main/javaagent.json"
+	into "${project.buildDir}/libs"
+}
+
+assemble.dependsOn copyAppOptics, copyAppOpticsConfig
+bootRun.dependsOn copyAppOptics, copyAppOpticsConfig
