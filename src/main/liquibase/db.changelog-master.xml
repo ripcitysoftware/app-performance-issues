@@ -10,6 +10,12 @@
   <changeSet author="cmaki" id="db.data" context="" logicalFilePath="db.data">
     <sqlFile path="sql/db.data.sql" relativeToChangelogFile="true" stripComments="false"/>
   </changeSet>
+  <changeSet author="cmaki" id="add.address" context="" logicalFilePath="add.address">
+    <sqlFile path="sql/add.address.sql" relativeToChangelogFile="true" stripComments="false"/>
+  </changeSet>
+  <changeSet author="cmaki" id="add.address.data" context="" logicalFilePath="add.address.data">
+    <sqlFile path="sql/add.address.data.sql" relativeToChangelogFile="true" stripComments="false"/>
+  </changeSet>
   <!--<changeSet author="cmaki" id="example" context="" logicalFilePath="exmample">-->
     <!--<sqlFile path="sql/example.sql" relativeToChangelogFile="true" stripComments="false"/>-->
   <!--</changeSet>-->

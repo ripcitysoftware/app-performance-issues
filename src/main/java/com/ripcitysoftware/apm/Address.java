@@ -1,14 +1,13 @@
 package com.ripcitysoftware.apm;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import lombok.AllArgsConstructor;
@@ -19,18 +18,23 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Person {
+public class Address {
 
   @Id
   @GeneratedValue
-  @Column(name = "PERSON_ID")
+  @Column(name = "ADDRESS_ID")
   public Long id;
 
-  private String name;
+  private String street;
 
-  @OneToMany(cascade = CascadeType.ALL,
-      mappedBy = "person", orphanRemoval = true)
-  private List<Address> addressList = new ArrayList<>();
+  private String city;
+
+  private String state;
+
+  @JsonIgnore
+  @ManyToOne
+  @JoinColumn(name = "PERSON_ID_FK")
+  private Person person;
 
   @Column(name = "DATE_CREATED")
   private Instant dateCreated;
@@ -38,15 +42,8 @@ public class Person {
   @Column(name = "DATE_UPDATED")
   private Instant dateUpdated;
 
-  public void addAddress(Address address) {
-    if (!addressList.contains(address)) {
-      addressList.add(address);
-      address.setPerson(this);
-    }
-  }
-  public void removeAddress(Address address) {
-    addressList.remove(address);
-    address.setPerson(null);
+  public void setPerson(Person person) {
+    this.person = person;
   }
 
   @PrePersist
