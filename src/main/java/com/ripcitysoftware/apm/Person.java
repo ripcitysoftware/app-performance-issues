@@ -14,6 +14,8 @@ import javax.persistence.PreUpdate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Data
 @AllArgsConstructor
@@ -30,6 +32,7 @@ public class Person {
 
   @OneToMany(cascade = CascadeType.ALL,
       mappedBy = "personId", orphanRemoval = true)
+  @Fetch(value = FetchMode.SUBSELECT)
   private List<Address> addressList = new ArrayList<>();
 
   @Column(name = "DATE_CREATED")
