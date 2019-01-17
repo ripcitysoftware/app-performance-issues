@@ -29,7 +29,7 @@ public class Person {
   private String name;
 
   @OneToMany(cascade = CascadeType.ALL,
-      mappedBy = "person", orphanRemoval = true)
+      mappedBy = "personId", orphanRemoval = true)
   private List<Address> addressList = new ArrayList<>();
 
   @Column(name = "DATE_CREATED")
@@ -41,12 +41,10 @@ public class Person {
   public void addAddress(Address address) {
     if (!addressList.contains(address)) {
       addressList.add(address);
-      address.setPerson(this);
     }
   }
   public void removeAddress(Address address) {
     addressList.remove(address);
-    address.setPerson(null);
   }
 
   @PrePersist
