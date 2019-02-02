@@ -6,8 +6,11 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -21,6 +24,8 @@ import org.hibernate.annotations.FetchMode;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@NamedEntityGraph(name = "graph.person.address",
+    attributeNodes = @NamedAttributeNode("addressList"))
 public class Person {
 
   @Id
@@ -32,7 +37,6 @@ public class Person {
 
   @OneToMany(cascade = CascadeType.ALL,
       mappedBy = "personId", orphanRemoval = true)
-  @Fetch(value = FetchMode.SUBSELECT)
   private List<Address> addressList = new ArrayList<>();
 
   @Column(name = "DATE_CREATED")
