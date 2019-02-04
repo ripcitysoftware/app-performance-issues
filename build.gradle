@@ -31,7 +31,7 @@ applicationDefaultJvmArgs = ["-javaagent:$buildDir/libs/appoptics.jar"]
 mainClassName = 'com.ripcitysoftware.apm.DemoApplication'
 
 dependencies {
-	appOptics 'com.appoptics.agent.java:appoptics-agent:6.7.1'
+	appOptics 'com.appoptics.agent.java:appoptics-agent:+'
 
 	implementation('org.springframework.boot:spring-boot-starter-actuator')
 	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
