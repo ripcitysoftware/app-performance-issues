@@ -21,11 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class DemoController {
 
   private PersonRepository personRepository;
+  private DeadLock deadLock;
 
   @Autowired
-
-  public DemoController(PersonRepository personRepository) {
+  public DemoController(PersonRepository personRepository,
+      DeadLock deadLock) {
     this.personRepository = personRepository;
+    this.deadLock = deadLock;
   }
 
   @GetMapping("/persons")
@@ -43,5 +45,11 @@ public class DemoController {
   @ResponseBody
   public Optional<Person> getPerson(@PathVariable long id) {
     return personRepository.findById(id);
+  }
+
+  @GetMapping("/lock")
+  @ResponseBody
+  public void startDeadlock() {
+    deadLock.deadlock();
   }
 }
